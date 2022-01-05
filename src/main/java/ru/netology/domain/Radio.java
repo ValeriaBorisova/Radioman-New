@@ -1,66 +1,94 @@
 package ru.netology.domain;
 
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Data
+@Setter(AccessLevel.PRIVATE)
+
 public class Radio {
-    private int station = 0;
-    private int volume = 5;
+    int station;
+    short stationsQuantity = 10;
+    byte volume = 20;
 
-    /* Установка параметров */
+    /* Конструкторы
+     * --------------------------------------------------- */
 
-    public void setStation(int station) {
-        if (station > 9) {
+    public Radio(short stationsQuantity) {
+        specifyStationsQuantity(stationsQuantity);
+    }
+
+    public Radio(int station) {
+        specifyStation(station);
+    }
+
+    public Radio(byte volume) {
+        if (volume > 100) {
+            return;
+        }
+        if (volume < 0) {
+            return;
+        }
+        volume(volume);
+    }
+
+    /* Установка параметров
+     * --------------------------------------------------- */
+
+    public void specifyStationsQuantity(short stationsQuantity) {
+        if (stationsQuantity > 120) {
+            return;
+        }
+        if (stationsQuantity < 1) {
+            return;
+        }
+        stationsQuantity(stationsQuantity);
+    }
+
+    public void specifyStation(int station) {
+        if (station > stationsQuantity) {
             return;
         }
         if (station < 0) {
             return;
         }
-        this.station = station;
+        station(station);
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
+    /* Оперирование станциями
+     * --------------------------------------------------- */
 
-    /* Оперирование станциями */
-
-    public void selectorStationUp() {
-        if (station == 9) {
-            setStation(0);
+    public void switchStationUp() {
+        if (station == stationsQuantity) {
+            station(0);
             return;
         }
-        setStation(station + 1);
+        station(++station);
     }
 
-    public void selectorStationDown() {
+    public void switchStationDown() {
         if (station == 0) {
-            setStation(9);
+            station(stationsQuantity);
             return;
         }
-        setStation(station - 1);
+        station(--station);
     }
 
-    /* Регулировка громкости */
+    /* Регулировка громкости
+     * --------------------------------------------------- */
 
     public void increaseVolume() {
-        if (volume == 10) {
+        if (volume == 100) {
             return;
         }
-        setVolume(volume + 1);
+        volume(++volume);
     }
 
     public void decreaseVolume() {
         if (volume == 0) {
             return;
         }
-        setVolume(volume - 1);
-    }
-
-    /* Getters */
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public int getStation() {
-        return station;
+        volume(--volume);
     }
 }
