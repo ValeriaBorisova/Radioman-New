@@ -1,66 +1,96 @@
 package ru.netology.domain;
 
 public class Radio {
-    private int station = 0;
-    private int volume = 5;
+    private int currentStation;
+    private int currentVolume;
+    private int amountStation = 10;
 
-    /* Установка параметров */
 
-    public void setStation(int station) {
-        if (station > 9) {
-            return;
-        }
-        if (station < 0) {
-            return;
-        }
-        this.station = station;
+    public Radio() {
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public Radio(int amountStation) {
+        this.amountStation = amountStation;
     }
 
-    /* Оперирование станциями */
+    public int getAmountStation() {
+        return amountStation;
+    }
 
-    public void selectorStationUp() {
-        if (station == 9) {
-            setStation(0);
+    public void setAmountStation(int amountStation) {
+        this.amountStation = amountStation;
+    }
+
+    public int getCurrentStation() {
+        return currentStation;
+    }
+
+    public void setCurrentStation(int currentStation) {
+        if (currentStation > amountStation - 1) {
             return;
         }
-        setStation(station + 1);
-    }
-
-    public void selectorStationDown() {
-        if (station == 0) {
-            setStation(9);
+        if (currentStation < 0) {
             return;
         }
-        setStation(station - 1);
+
+        this.currentStation = currentStation;
+
     }
 
-    /* Регулировка громкости */
+    public int getCurrentVolume() {
+        return currentVolume;
+    }
+
+    public void setCurrentVolume(int currentVolume) {
+        if (currentVolume > 100) {
+            return;
+        }
+        if (currentVolume < 0) {
+            return;
+        }
+        this.currentVolume = currentVolume;
+    }
+
+    public void increaseStation() {
+
+        if (currentStation < amountStation) {
+            currentStation = currentStation + 1;
+        }
+
+        if (currentStation >= amountStation) {
+            currentStation = 0;
+        }
+    }
+
+
+    public void reduceStation() {
+
+        if (currentStation == 0) {
+            currentStation = currentStation - 1;
+        }
+
+        if (currentStation > 0) {
+            currentStation = currentStation - 1;
+        }
+
+        if (currentStation <= - 1) {
+            currentStation = amountStation - 1;
+        }
+
+    }
 
     public void increaseVolume() {
-        if (volume == 10) {
-            return;
+        if (currentVolume < 100) {
+            currentVolume = currentVolume + 1;
         }
-        setVolume(volume + 1);
+
     }
 
-    public void decreaseVolume() {
-        if (volume == 0) {
-            return;
+    public void reduceVolume() {
+        if (currentVolume > 0) {
+            currentVolume = currentVolume - 1;
         }
-        setVolume(volume - 1);
+
     }
 
-    /* Getters */
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public int getStation() {
-        return station;
-    }
 }
