@@ -5,124 +5,124 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
-    Radio radio = new Radio();
-
-    /* Установка количества радиостанций */
 
     @Test
-    void shouldSpecifyStationQuantityPositive() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 1);
-        assertEquals(1, radio.getStationsQuantity());
+    public void shouldSetStationBelowMin() {
+        Radio radio = new Radio();
+        radio.setCurrentStation(4);
+        radio.setCurrentStation(-1);
+        assertEquals(4, radio.getCurrentStation());
     }
 
     @Test
-    void shouldSpecifyStationQuantityNegative() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 121);
-        assertEquals(120, radio.getStationsQuantity());
+    public void shouldSetStationAboveMax() {
+        Radio radio = new Radio();
+        radio.setCurrentStation(9);
+        radio.setCurrentStation(10);
+        assertEquals(9, radio.getCurrentStation());
     }
 
     @Test
-    void shouldSpecifyStationQuantityNegative2() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 0);
-        assertEquals(120, radio.getStationsQuantity());
-    }
+    public void shouldIncreaseStation() {
+        Radio radio = new Radio(50);
+        radio.setCurrentStation(48);
+        radio.increaseStation();
+        assertEquals(49, radio.getCurrentStation());
 
-    /* Установка номера радиостанции при количестве радиостанций по умолчанию */
-
-    @Test
-    void shouldSpecifyStationWithDefaultQuantityPositive() {
-        radio.setStation(5);
-        assertEquals(5, radio.getStation());
     }
 
     @Test
-    void shouldSpecifyStationWithDefaultQuantityNegative() {
-        radio.setStation(11);
-        assertEquals(0, radio.getStation());
+    public void shouldIncreaseStationAboveMax() {
+        Radio radio = new Radio(50);
+        radio.setCurrentStation(49);
+        radio.increaseStation();
+        assertEquals(0, radio.getCurrentStation());
+
     }
 
     @Test
-    void shouldSpecifyStationWithDefaultQuantityNegative2() {
-        radio.setStation(-1);
-        assertEquals(0, radio.getStation());
-    }
+    public void shouldReduceStationBelowMin() {
+        Radio radio = new Radio(50);
+        radio.setCurrentStation(0);
+        radio.reduceStation();
+        assertEquals(49, radio.getCurrentStation());
 
-    /* Установка номера радиостанции при собственном количестве радиостанций */
-
-    @Test
-    void shouldSpecifyStationWithCustomQuantityPositive() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 60);
-        radio.setStation(30);
-        assertEquals(30, radio.getStation());
     }
 
     @Test
-    void shouldSpecifyStationWithCustomQuantityNegative() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 60);
-        radio.setStation(61);
-        assertEquals(0, radio.getStation());
+    public void shouldReduceStation() {
+        Radio radio = new Radio(50);
+        radio.setCurrentStation(1);
+        radio.reduceStation();
+        assertEquals(0, radio.getCurrentStation());
+
     }
 
     @Test
-    void shouldSpecifyStationWithCustomQuantityNegative2() {
-        Radio radio = new Radio((short) 120);
-        radio.setStationsQuantity((short) 60);
-        radio.setStation(-1);
-        assertEquals(0, radio.getStation());
-    }
-
-    /* Переключение радиостанций */
-
-    @Test
-    void shouldSwitchStationUpToRoundDefault() {
-        Radio radio = new Radio("ThroughMax", 9);
-        radio.selectorStationUp(); // 9~10
-        radio.selectorStationUp(); // 10~0
-        assertEquals(0, radio.getStation());
+    public void shouldIncreaseVolume() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(5);
+        radio.increaseVolume();
+        assertEquals(6, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldSwitchStationDownToRoundDefault() {
-        Radio radio = new Radio("ThroughMin", 1);
-        radio.selectorStationDown(); // 1~0
-        radio.selectorStationDown(); // 0~10
-        assertEquals(10, radio.getStation());
-    }
-
-    /* Регулировка громкости */
-
-    @Test
-    void shouldIncreaseVolumeToThreshold() {
-        Radio radio = new Radio(99);
-        radio.increaseVolume(); // 99~100
-        radio.increaseVolume(); // 100~100
-        assertEquals(100, radio.getVolume());
+    public void shouldReduceVolume() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.reduceVolume();
+        assertEquals(99, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldDecreaseVolumeToThreshold() {
-        Radio radio = new Radio(1);
-        radio.decreaseVolume(); // 1~0
-        radio.decreaseVolume(); // 0~0
-        assertEquals(0, radio.getVolume());
-    }
-
-    /* Тесты для полного покрытия */
-
-    @Test
-    void shouldSetVolumeNegative() {
-        Radio radio = new Radio(101);
-        assertEquals(20, radio.getVolume());
+    public void shouldIncreaseVolumeWhenMax() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.increaseVolume();
+        assertEquals(100, radio.getCurrentVolume());
     }
 
     @Test
-    void shouldSetVolumeNegative2() {
-        Radio radio = new Radio(-1);
-        assertEquals(20, radio.getVolume());
+    public void shouldReduceVolumeWhenMin() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(0);
+        radio.reduceVolume();
+        assertEquals(0, radio.getCurrentVolume());
     }
+
+    @Test
+    public void shouldSetVolumeAboveMax() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(101);
+        assertEquals(0, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void shouldSetVolumeBelowMin() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(-1);
+        assertEquals(0, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void shouldChangeMaxStation() {
+        Radio radio = new Radio(50);
+        radio.setCurrentStation(49);
+        radio.setAmountStation(48);
+        radio.increaseStation();
+        assertEquals(0, radio.getCurrentStation());
+
+    }
+
+    @Test
+    public void shouldSetMaxStationZero() {
+        Radio radio = new Radio();
+        radio.setCurrentStation(0);
+        radio.reduceStation();
+        radio.setAmountStation(0);
+        radio.reduceStation();
+        assertEquals(8, radio.getCurrentStation());
+
+    }
+
 }
