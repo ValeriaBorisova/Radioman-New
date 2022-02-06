@@ -1,111 +1,96 @@
 package ru.netology.domain;
 
 public class Radio {
-    private String radioName = "Конструктор";
-    private int station;
-    private short stationsQuantity = 10;
-    private int volume = 20;
+    private int currentStation;
+    private int currentVolume;
+    private int amountStation = 10;
 
-    /* Конструкторы
-     * --------------------------------------------------- */
 
     public Radio() {
     }
 
-    public Radio(int volume) {
-        if (volume > 100) {
-            return;
-        }
-        if (volume < 0) {
-            return;
-        }
-        this.volume = volume;
+    public Radio(int amountStation) {
+        this.amountStation = amountStation;
     }
 
-    public Radio(short stationsQuantity) {
-        setStationsQuantity(stationsQuantity);
+    public int getAmountStation() {
+        return amountStation;
     }
 
-    public Radio(String radioName, int station) {
-        this.radioName = radioName;
-        setStation(station);
+    public void setAmountStation(int amountStation) {
+        this.amountStation = amountStation;
     }
 
-    /* Установка параметров
-     * --------------------------------------------------- */
+    public int getCurrentStation() {
+        return currentStation;
+    }
 
-    public void setStationsQuantity(short stationsQuantity) {
-        if (stationsQuantity > 120) {
+    public void setCurrentStation(int currentStation) {
+        if (currentStation > amountStation - 1) {
             return;
         }
-        if (stationsQuantity < 1) {
+        if (currentStation < 0) {
             return;
         }
-        this.stationsQuantity = stationsQuantity;
+
+        this.currentStation = currentStation;
+
     }
 
-    public void setStation(int station) {
-        if (station > stationsQuantity) {
+    public int getCurrentVolume() {
+        return currentVolume;
+    }
+
+    public void setCurrentVolume(int currentVolume) {
+        if (currentVolume > 100) {
             return;
         }
-        if (station < 0) {
+        if (currentVolume < 0) {
             return;
         }
-        this.station = station;
+        this.currentVolume = currentVolume;
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
+    public void increaseStation() {
 
-    /* Оперирование станциями
-     * --------------------------------------------------- */
-
-    public void selectorStationUp() {
-        if (station == stationsQuantity) {
-            setStation(0);
-            return;
+        if (currentStation < amountStation) {
+            currentStation = currentStation + 1;
         }
-        setStation(++station);
-    }
 
-    public void selectorStationDown() {
-        if (station == 0) {
-            setStation(stationsQuantity);
-            return;
+        if (currentStation >= amountStation) {
+            currentStation = 0;
         }
-        setStation(--station);
     }
 
-    /* Регулировка громкости
-     * --------------------------------------------------- */
+
+    public void reduceStation() {
+
+        if (currentStation == 0) {
+            currentStation = currentStation - 1;
+        }
+
+        if (currentStation > 0) {
+            currentStation = currentStation - 1;
+        }
+
+        if (currentStation <= -1) {
+            currentStation = amountStation - 1;
+        }
+
+    }
 
     public void increaseVolume() {
-        if (volume == 100) {
-            return;
+        if (currentVolume < 100) {
+            currentVolume = currentVolume + 1;
         }
-        setVolume(++volume);
+
     }
 
-    public void decreaseVolume() {
-        if (volume == 0) {
-            return;
+    public void reduceVolume() {
+        if (currentVolume > 0) {
+            currentVolume = currentVolume - 1;
         }
-        setVolume(--volume);
+
     }
 
-    /* Getters
-     * --------------------------------------------------- */
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public int getStation() {
-        return station;
-    }
-
-    public short getStationsQuantity() {
-        return stationsQuantity;
-    }
 }
